@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Страница группы {{course.name}}
+{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/course_page.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/students.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="frame-child2"></div>
+    <div class="testimonials3">
+        <b class="b10">{{ course.curator }}</b>
+        <div class="div32">Куратор группы</div>
+        <img class="mask-group-icon4" alt="" src="{{ url_for('static', filename='images/' + course.curator_img) }}" />
+
+        <div class="testimonials-child"></div>
+        <div class="testimonials-item"></div>
+        <div class="testimonials-inner"></div>
+        <img class="line-icon" alt="" src="static/images/line-4.svg" />
+
+        <div class="div33">{{ course.curators_description }}</div>
+        <img class="testimonials-child1" alt="" src="static/images/group-51.svg" />
+    </div>
+<b class="b11">Список студентов</b>
+     <div class="students-container">
+        <div class="students-grid">
+            {% for student in students %}
+            {%if course.course== student.course%}
+                <div class="student-card"><a href="/student{{ student.id }}" id="{{ student.id }}">
+                    <img src="{{ url_for('static', filename='images/' + student.img) }}" alt="Фото {{ student.name }}" class="student-photo">
+                    <div class="student-info">
+                        <h2 class="student-name">{{ student.name }}</h2>
+                        <p class="student-description">{{ student.description }}</p>
+                    </div></a>
+                </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+</a>
+</div>
+
+
+    <div class="line-div"></div>
+    <div class="frame-child3"></div>
+    <div class=""></div>
+    <div class="group3">Общее фото группы</div>
+
+    <img class="you-can-do-with-skilline5" alt="" src="{{ url_for('static', filename='images/' + course.groups_img) }}" />
+
+    <div class="group-frame">
+          <div class="group-wrapper1">
+                <img class="group-child52" alt="" src="static/images/ellipse-1063.svg" />
+                <b class="b14">Группа {{ course.name }}</b>
+                <div class="group-child53"></div>
+            </div>
+
+    </div>
+
+{% endblock %}

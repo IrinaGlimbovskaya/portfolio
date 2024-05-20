@@ -1,0 +1,103 @@
+    <!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/global.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<title>{% block title%}Главная страница{% endblock %}</title>
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+      <div class="rectangle-parent">
+        <div class="header">
+        <div class="container">
+          <b class="b"><a href ="/home">&lt;ПИ /&gt;</a></b>
+          <div class="navigation">
+            <div class="link">
+              <div class="about"><a href ="/home">Главная</a></div>
+            </div>
+            <div class="link1" id="linkContainer1">
+                <div class="about"><a href ="/ListOfGroups">Группы</a></div>
+            </div>
+            <div class="link2">
+              <div class="about"></div>
+            </div>
+            <div class="link" id="linkContainer">
+              <div class="about"><a href ="/Contacts">Контакты</a></div>
+            </div>
+            <div class="link" >
+              <div class="about"><a href ="/Lists">Списки</a></div>
+            </div>
+            <div class="divider"></div>
+
+            <div class="actions">
+    			<div class="icon-button">
+        			<img class="icon" alt="" src="static/images/icon.svg" id="themeToggle">
+                </div>
+			    <div class="icon-button">
+                    <img class="microphone-icon" alt="Микрофон" src="static/images/microphone.svg" id="start-record-btn">
+                </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+<main>
+        {% block content %}{% endblock %}
+</main>
+
+ <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-links">
+                <div class="footer-link"><a href="/">Главная</a></div>
+                <div class="footer-link"><a href="https://rfpgu.ru/">Сайт РФ ПГУ</a></div>
+                <div class="footer-link"><a href="/Contacts">Контакты</a></div>
+                <div class="footer-link"><a href="/ListOfGroups">Группы</a></div>
+                <div class="footer-link"><a href="/Lists">Списки</a></div>
+                <div class="footer-link"><a href="https://www.facebook.com/groups/iipirfpgu?locale=ru_RU">Кафедра информатики и программной инженерии РФПГУ</a></div>
+            </div>
+            <div class="footer-info">
+                <div class="footer-address">Strada Iuri Gagarin 12, Rîbniţa</div>
+                <h1 class="footer-title">ИиПИ</h1>
+                <div class="footer-phone">(00373)-(555)-2-09-03</div>
+                <img class="subtract-icon" loading="lazy" alt="" src="static/images/subtract.svg">
+            </div>
+        </div>
+    </footer>
+      </div>
+// Получаем кнопку микрофона
+const startRecordBtn = document.getElementById('start-record-btn');
+
+// Подключаем распознавание речи
+const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+recognition.lang = 'ru-RU';
+recognition.interimResults = false;
+recognition.maxAlternatives = 1;
+
+// Обработчик нажатия на кнопку микрофона
+startRecordBtn.addEventListener('click', () => {
+    // Начинаем распознавание речи
+    recognition.start();
+});
+
+// Обработчик результатов распознавания речи
+recognition.onresult = function(event) {
+    // Получаем текст из результатов
+    const speechToText = event.results[0][0].transcript.trim().toLowerCase();
+
+    // Проходимся по вашему меню и проверяем, есть ли совпадение с распознанным текстом
+    const links = document.querySelectorAll('.navigation .about a');
+    links.forEach(link => {
+        if (link.textContent.toLowerCase() === speechToText) {
+            // Если найдено совпадение, переходим по ссылке
+            window.location.href = link.href;
+        }
+    });
+};
+</body>
+</html>
